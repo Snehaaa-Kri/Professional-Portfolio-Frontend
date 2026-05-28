@@ -1,13 +1,13 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Code2, Server, GraduationCap, Cpu, ExternalLink, RefreshCw } from 'lucide-react';
 import { portfolioData } from '../data/portfolioData';
 
 const badges = [
   { icon: <GraduationCap className="w-4 h-4" />, text: 'CS Student @ IIIT Una' },
-  { icon: <Server className="w-4 h-4" />,        text: 'Backend Developer' },
-  { icon: <Code2 className="w-4 h-4" />,          text: 'MERN Stack' },
-  { icon: <Cpu className="w-4 h-4" />,            text: 'DSA Enthusiast' },
+  { icon: <Server className="w-4 h-4" />, text: 'Backend Developer' },
+  { icon: <Code2 className="w-4 h-4" />, text: 'MERN Stack' },
+  { icon: <Cpu className="w-4 h-4" />, text: 'DSA Enthusiast' },
 ];
 
 const containerVariants = {
@@ -25,7 +25,7 @@ function CodolioCard({ url }) {
   const [loading, setLoading] = useState(true);
 
   // Codolio card image endpoint
-  const cardImgUrl = url || 'https://codolio.com/profile/sneha_00/card';
+  const cardImgUrl = url;
 
   if (error) return null;
 
@@ -53,40 +53,40 @@ function CodolioCard({ url }) {
 }
 
 /* GitHub readme-stats card – fetches the public SVG from vercel */
-function GithubStatsCard({ githubUrl }) {
-  const [error, setError] = useState(false);
-  const [loading, setLoading] = useState(true);
+// function GithubStatsCard({ githubUrl }) {
+//   const [error, setError] = useState(false);
+//   const [loading, setLoading] = useState(true);
 
-  // extract username from URL e.g. https://github.com/Snehaaa-Kri
-  const username = githubUrl ? githubUrl.replace(/\/$/, '').split('/').pop() : '';
-  if (!username) return null;
+//   // extract username from URL e.g. https://github.com/Snehaaa-Kri
+//   const username = githubUrl ? githubUrl.replace(/\/$/, '').split('/').pop() : '';
+//   if (!username) return null;
 
-  const statsUrl = `https://github-readme-stats.vercel.app/api?username=${username}&show_icons=true&theme=tokyonight&hide_border=true&bg_color=0d1117&title_color=a78bfa&icon_color=818cf8&text_color=94a3b8&count_private=true`;
+//   const statsUrl = `https://github-readme-stats.vercel.app/api?username=${username}&show_icons=true&theme=tokyonight&hide_border=true&bg_color=0d1117&title_color=a78bfa&icon_color=818cf8&text_color=94a3b8&count_private=true`;
 
-  if (error) return null;
+//   if (error) return null;
 
-  return (
-    <div className="relative rounded-2xl overflow-hidden border border-slate-200/60 dark:border-slate-700/50 bg-[#0d1117] shadow-sm">
-      {loading && (
-        <div className="absolute inset-0 flex items-center justify-center bg-slate-800/80 min-h-[120px]">
-          <RefreshCw className="w-5 h-5 text-violet-400 animate-spin" />
-        </div>
-      )}
-      <a href={githubUrl} target="_blank" rel="noopener noreferrer">
-        <img
-          src={statsUrl}
-          alt="GitHub Stats"
-          className="w-full object-contain"
-          onLoad={() => setLoading(false)}
-          onError={() => { setError(true); setLoading(false); }}
-        />
-      </a>
-      <div className="absolute top-2 right-2 px-2 py-0.5 rounded-full text-[10px] font-bold bg-slate-900/70 text-slate-300 backdrop-blur-sm">
-        GitHub
-      </div>
-    </div>
-  );
-}
+//   return (
+//     <div className="relative rounded-2xl overflow-hidden border border-slate-200/60 dark:border-slate-700/50 bg-[#0d1117] shadow-sm">
+//       {loading && (
+//         <div className="absolute inset-0 flex items-center justify-center bg-slate-800/80 min-h-[120px]">
+//           <RefreshCw className="w-5 h-5 text-violet-400 animate-spin" />
+//         </div>
+//       )}
+//       <a href={githubUrl} target="_blank" rel="noopener noreferrer">
+//         <img
+//           src={statsUrl}
+//           alt="GitHub Stats"
+//           className="w-full object-contain"
+//           onLoad={() => setLoading(false)}
+//           onError={() => { setError(true); setLoading(false); }}
+//         />
+//       </a>
+//       <div className="absolute top-2 right-2 px-2 py-0.5 rounded-full text-[10px] font-bold bg-slate-900/70 text-slate-300 backdrop-blur-sm">
+//         GitHub
+//       </div>
+//     </div>
+//   );
+// }
 
 /* GitHub streak stats card */
 function StreakCard({ githubUrl }) {
@@ -126,9 +126,36 @@ function StreakCard({ githubUrl }) {
 export default function About() {
   const { bio, stats } = portfolioData.personalInfo;
 
-  const leetcodeUrl  = import.meta.env.VITE_LEETCODE;
-  const githubUrl    = import.meta.env.VITE_GITHUB_URL;
-  const linkedinUrl  = import.meta.env.VITE_LINKEDIN_URL;
+  const leetcodeUrl = import.meta.env.VITE_LEETCODE;
+  const githubUrl = import.meta.env.VITE_GITHUB_URL;
+  const linkedinUrl = import.meta.env.VITE_LINKEDIN_URL;
+
+  const [statsData, setStatsData] = useState({
+    leetcodeSolved: 816,
+    leetcodeRating: 1937,
+    totalSolved: 968,
+    loading: true
+  });
+
+  useEffect(() => {
+    const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+    fetch(`${API_URL}/api/stats`)
+      .then(res => res.json())
+      .then(data => {
+        if (data.success) {
+          setStatsData({
+            leetcodeSolved: data.leetcodeSolved,
+            leetcodeRating: data.leetcodeRating,
+            totalSolved: data.totalSolved,
+            loading: false
+          });
+        }
+      })
+      .catch(err => {
+        console.error('Error fetching live stats in About:', err);
+        setStatsData(prev => ({ ...prev, loading: false }));
+      });
+  }, []);
 
   return (
     <section
@@ -183,43 +210,57 @@ export default function About() {
               ))}
             </motion.div>
 
-            {/* ── Stat Cards (clickable → real profiles) ── */}
-            <motion.div variants={itemVariants} className="grid grid-cols-2 gap-4">
-              {stats.map((stat) => (
-                <motion.a
-                  key={stat.label}
-                  href={stat.link || '#'}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  whileHover={{ y: -5, scale: 1.02 }}
-                  className="relative group glass-card p-5 rounded-2xl border border-slate-200/60 dark:border-slate-800 text-center overflow-hidden cursor-pointer block no-underline"
-                  aria-label={stat.linkLabel}
-                >
-                  {/* top gradient bar */}
-                  <div className="absolute top-0 inset-x-0 h-0.5 bg-gradient-to-r from-violet-500 via-indigo-500 to-pink-500 scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left rounded-t-2xl" />
-                  {/* glow */}
-                  <div className="absolute inset-0 bg-gradient-to-br from-violet-500/5 to-indigo-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-2xl" />
-
-                  <div className="text-2xl mb-1 relative z-10">{stat.icon}</div>
-                  <p className="text-3xl font-black bg-gradient-to-r from-violet-600 to-indigo-500 bg-clip-text text-transparent mb-0.5 relative z-10">
-                    {stat.value}
-                  </p>
-                  <p className="text-slate-500 dark:text-slate-400 text-xs font-bold uppercase tracking-wider relative z-10">
-                    {stat.label}
-                  </p>
-
-                  {/* hover link label */}
-                  <div className="flex items-center justify-center gap-1 mt-2 text-[11px] font-semibold text-violet-500 dark:text-violet-400 opacity-0 group-hover:opacity-100 transition-opacity duration-200 relative z-10">
-                    <ExternalLink className="w-3 h-3" />
-                    <span>{stat.linkLabel}</span>
-                  </div>
-                </motion.a>
-              ))}
-            </motion.div>
           </div>
 
-          {/* ── Right: Live profile embed cards ── */}
+          {/* ── Right Section ── */}
           <motion.div
+            variants={itemVariants}
+            className="lg:col-span-6 space-y-6"
+          >
+            {/* Stat Cards */}
+            <div className="grid grid-cols-2 gap-4">
+
+              {stats.map((stat) => {
+                let displayValue = stat.value;
+                if (stat.label === "DSA Problems Solved") {
+                  displayValue = `${statsData.totalSolved}`;
+                } else if (stat.label === "LeetCode Rating") {
+                  displayValue = `${statsData.leetcodeRating}`;
+                }
+                return (
+                  <motion.a
+                    key={stat.label}
+                    href={stat.link || '#'}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    whileHover={{ y: -5, scale: 1.02 }}
+                    className="relative group glass-card p-5 rounded-2xl border border-slate-200/60 dark:border-slate-800 text-center overflow-hidden cursor-pointer block no-underline"
+                    aria-label={stat.linkLabel}
+                  >
+                    {/* top gradient bar */}
+                    <div className="absolute top-0 inset-x-0 h-0.5 bg-gradient-to-r from-violet-500 via-indigo-500 to-pink-500 scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left rounded-t-2xl" />
+                    {/* glow */}
+                    <div className="absolute inset-0 bg-gradient-to-br from-violet-500/5 to-indigo-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-2xl" />
+
+                    <div className="text-2xl mb-1 relative z-10">{stat.icon}</div>
+                    <p className="text-3xl font-black bg-gradient-to-r from-violet-600 to-indigo-500 bg-clip-text text-transparent mb-0.5 relative z-10">
+                      {displayValue}
+                    </p>
+                    <p className="text-slate-500 dark:text-slate-400 text-xs font-bold uppercase tracking-wider relative z-10">
+                      {stat.label}
+                    </p>
+
+                    {/* hover link label */}
+                    <div className="flex items-center justify-center gap-1 mt-2 text-[11px] font-semibold text-violet-500 dark:text-violet-400 opacity-0 group-hover:opacity-100 transition-opacity duration-200 relative z-10">
+                      <ExternalLink className="w-3 h-3" />
+                      <span>{stat.linkLabel}</span>
+                    </div>
+                  </motion.a>
+                );
+              })}
+            </div>
+          </motion.div>
+          {/* <motion.div
             variants={itemVariants}
             className="lg:col-span-6 space-y-4"
           >
@@ -227,23 +268,19 @@ export default function About() {
               Live Profile Stats
             </p>
 
-            {/* Codolio DSA card */}
             <CodolioCard url={leetcodeUrl} />
 
-            {/* GitHub readme-stats */}
             <GithubStatsCard githubUrl={githubUrl} />
 
-            {/* GitHub streak */}
             <StreakCard githubUrl={githubUrl} />
 
-            {/* Footer note */}
             <p className="text-center text-[11px] text-slate-400 dark:text-slate-600 font-medium">
               Stats auto-updated from{' '}
               <a href={leetcodeUrl} target="_blank" rel="noopener noreferrer" className="underline hover:text-violet-500 transition-colors">Codolio</a>
               {' & '}
               <a href={githubUrl} target="_blank" rel="noopener noreferrer" className="underline hover:text-violet-500 transition-colors">GitHub</a>
             </p>
-          </motion.div>
+          </motion.div> */}
         </motion.div>
       </div>
     </section>

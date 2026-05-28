@@ -75,27 +75,27 @@ function ParticleCanvas() {
 }
 
 /* ─── Animated Code Terminal Card ───────────────────────────────────────── */
-const codeLines = [
-  { text: 'const dev = {', color: 'text-violet-300' },
-  { text: '  name: "Sneha Kumari",', color: 'text-emerald-400' },
-  { text: '  stack: ["MERN", "REST", "JWT"],', color: 'text-sky-400' },
-  { text: '  rating: "1900+ LeetCode",', color: 'text-amber-400' },
-  { text: '  status: "open_to_work",', color: 'text-emerald-400' },
-  { text: '};', color: 'text-violet-300' },
-  { text: '', color: '' },
-  { text: 'dev.build("impact") 🚀', color: 'text-pink-400' },
-];
-
-function TerminalCard() {
+function TerminalCard({ leetcodeRating }) {
   const [visibleLines, setVisibleLines] = useState(0);
   const [cursor, setCursor] = useState(true);
+
+  const codeLines = [
+    { text: 'const dev = {', color: 'text-violet-300' },
+    { text: '  name: "Sneha Kumari",', color: 'text-emerald-400' },
+    { text: '  stack: ["MERN", "REST", "JWT"],', color: 'text-sky-400' },
+    { text: `  rating: "${leetcodeRating || 1937}+ LeetCode",`, color: 'text-amber-400' },
+    { text: '  status: "open_to_work",', color: 'text-emerald-400' },
+    { text: '};', color: 'text-violet-300' },
+    { text: '', color: '' },
+    { text: 'dev.build("impact") 🚀', color: 'text-pink-400' },
+  ];
 
   useEffect(() => {
     if (visibleLines < codeLines.length) {
       const t = setTimeout(() => setVisibleLines(v => v + 1), 420);
       return () => clearTimeout(t);
     }
-  }, [visibleLines]);
+  }, [visibleLines, codeLines.length]);
 
   useEffect(() => {
     const t = setInterval(() => setCursor(c => !c), 530);
@@ -239,6 +239,32 @@ export default function Hero() {
   const resume   = import.meta.env.VITE_RESUME_URL   || '#';
 
   const [taglineIndex, setTaglineIndex] = useState(0);
+  const [statsData, setStatsData] = useState({
+    leetcodeSolved: 816,
+    leetcodeRating: 1937,
+    totalSolved: 968,
+    loading: true
+  });
+
+  useEffect(() => {
+    const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+    fetch(`${API_URL}/api/stats`)
+      .then(res => res.json())
+      .then(data => {
+        if (data.success) {
+          setStatsData({
+            leetcodeSolved: data.leetcodeSolved,
+            leetcodeRating: data.leetcodeRating,
+            totalSolved: data.totalSolved,
+            loading: false
+          });
+        }
+      })
+      .catch(err => {
+        console.error('Error fetching live stats in Hero:', err);
+        setStatsData(prev => ({ ...prev, loading: false }));
+      });
+  }, []);
 
   useEffect(() => {
     const t = setInterval(() => setTaglineIndex(p => (p + 1) % taglines.length), 2800);
@@ -364,9 +390,17 @@ export default function Hero() {
               transition={{ duration: 0.4, delay: 0.5 }}
               className="flex flex-wrap gap-3"
             >
-              {stats.map((s, i) => (
-                <StatChip key={s.label} value={s.value} label={s.label} delay={0.5 + i * 0.08} />
-              ))}
+              {stats.map((s, i) => {
+                let displayValue = s.value;
+                if (s.label === "DSA Problems Solved") {
+                  displayValue = `${statsData.totalSolved}+`;
+                } else if (s.label === "LeetCode Rating") {
+                  displayValue = `${statsData.leetcodeRating}+`;
+                }
+                return (
+                  <StatChip key={s.label} value={displayValue} label={s.label} delay={0.5 + i * 0.08} />
+                );
+              })}
             </motion.div>
 
             {/* CTA Buttons */}
@@ -462,7 +496,7 @@ export default function Hero() {
                 <div className="relative group">
                   <div className="absolute -inset-0.5 rounded-2xl bg-gradient-to-r from-violet-600 via-indigo-500 to-pink-500 opacity-40 blur group-hover:opacity-70 transition duration-500" />
                   <div className="relative">
-                    <TerminalCard />
+                    <TerminalCard leetcodeRating={statsData.leetcodeRating} />
                   </div>
                 </div>
               </motion.div>

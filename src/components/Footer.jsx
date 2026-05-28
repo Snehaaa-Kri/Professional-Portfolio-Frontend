@@ -35,9 +35,6 @@ export default function Footer() {
         <p className="text-slate-500 dark:text-slate-500 text-sm">
           &copy; {new Date().getFullYear()} {name}. All rights reserved.
         </p>
-        <p className="text-slate-400 dark:text-slate-600 text-xs">
-          Built with React.js, Vite, Tailwind CSS, and Framer Motion.
-        </p>
       </div>
     </footer>
   );

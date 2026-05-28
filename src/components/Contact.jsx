@@ -14,6 +14,7 @@ export default function Contact() {
   const [errors, setErrors] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitSuccess, setSubmitSuccess] = useState(false);
+  const [submitError, setSubmitError] = useState('');
 
   const contactMethods = [
     {
@@ -62,19 +63,39 @@ export default function Contact() {
     return Object.keys(tempErrors).length === 0;
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (!validate()) return;
 
     setIsSubmitting(true);
-    // Simulate API request
-    setTimeout(() => {
+    setSubmitError('');
+
+    try {
+      const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+      const response = await fetch(`${apiUrl}/api/contact`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(form),
+      });
+
+      const data = await response.json();
+
+      if (response.ok && data.success) {
+        setSubmitSuccess(true);
+        setForm({ name: '', email: '', subject: '', message: '' });
+        // Reset success message after 5 seconds
+        setTimeout(() => setSubmitSuccess(false), 5000);
+      } else {
+        setSubmitError(data.error || 'Something went wrong. Please try again.');
+      }
+    } catch (error) {
+      console.error('Contact submission error:', error);
+      setSubmitError('Failed to connect to the server. Please ensure the backend is running and try again.');
+    } finally {
       setIsSubmitting(false);
-      setSubmitSuccess(true);
-      setForm({ name: '', email: '', subject: '', message: '' });
-      // Reset success message after 5 seconds
-      setTimeout(() => setSubmitSuccess(false), 5000);
-    }, 1500);
+    }
   };
 
   return (
@@ -159,6 +180,13 @@ export default function Contact() {
                     className="space-y-5 text-left"
                     noValidate
                   >
+                    {submitError && (
+                      <div className="flex items-center gap-3 p-4 rounded-xl bg-red-50 dark:bg-red-950/30 border border-red-200 dark:border-red-900/50 text-red-650 dark:text-red-400 text-sm font-medium mb-2">
+                        <AlertCircle className="h-5 w-5 shrink-0 text-red-500" />
+                        <p>{submitError}</p>
+                      </div>
+                    )}
+                    
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
                       {/* Name field */}
                       <div className="space-y-1.5">

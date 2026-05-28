@@ -172,6 +172,61 @@ export const portfolioData = {
       demo: import.meta.env.VITE_GREVION_DEMO,
       category: "Full Stack",
       featured: true
+    },
+    {
+      title: "MarkMyFile – Backend System",
+      description:
+        "A backend system for managing and tracking files with secure data operations, RESTful APIs, and ML-powered plagiarism detection for content similarity analysis.",
+      image: "/projects/markmyfile.png",
+      tech: [
+        "Node.js",
+        "Express.js",
+        "MongoDB",
+        "Machine Learning",
+        "REST API"
+      ],
+      github: "https://github.com/Snehaaa-Kri/MarkMyFile-Backend.git",
+      demo: "",
+      category: "Backend",
+      featured: false
+    },
+    {
+      title: "GTA-Themed Portfolio Website",
+      description:
+        "A modern GTA-inspired portfolio website with immersive UI, smooth animations, responsive layouts, interactive sections, and dynamic project showcases.",
+      image: "/projects/gta-portfolio.png",
+      tech: [
+        "React.js",
+        "Vite",
+        "Tailwind CSS",
+        "Framer Motion",
+        "JavaScript",
+        "Lucide React",
+        "Nodemailer",
+        "Vercel"
+      ],
+      github: "https://github.com/Snehaaa-Kri/PortfolioWebsite",
+      demo: "https://portfolio-chi-six-ftiawtfif6.vercel.app/",
+      category: "Frontend",
+      featured: true
+    },
+    {
+      title: "AirConnect – Airline Booking System",
+      description:
+        "A full-stack airline booking platform with role-based access, flight management, secure authentication, booking workflows, and complete MERN stack integration.",
+      image: "/projects/airconnect.png",
+      tech: [
+        "React.js",
+        "Node.js",
+        "Express.js",
+        "MongoDB",
+        "JWT",
+        "Tailwind CSS"
+      ],
+      github: "https://github.com/Snehaaa-Kri/AirlineBookingSystem.git",
+      demo: "",
+      category: "Full Stack",
+      featured: false
     }
   ],
 
@@ -189,6 +244,13 @@ export const portfolioData = {
       date: "2025",
       description: "Secured 3rd place for building Grevion – Parali Management Platform.",
       link: import.meta.env.VITE_HACKATHON_CERTIFICATE
+    },
+    {
+      title: "Devteams Certificate of Appreciation",
+      issuer: "IIIT Una",
+      date: "2025",
+      description: "Received Certificate of Appreciation during Institute Day 2025 for contributions and active involvement in Devteams.",
+      link: "https://drive.google.com/file/d/1zzMNwRmGhL7NOogLPGrcmeuzEzX8YAVM/view?usp=drive_link"
     },
     {
       title: "MERN Stack Certification",

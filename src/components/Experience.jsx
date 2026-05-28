@@ -56,7 +56,7 @@ export default function Experience() {
               className="relative pl-8 md:pl-10 group"
             >
               {/* Timeline Indicator (Dot/Briefcase) */}
-              <div className="absolute -left-[17px] top-1 h-8 w-8 rounded-full bg-white dark:bg-slate-900 border-2 border-indigo-500 flex items-center justify-center text-indigo-600 dark:text-indigo-400 group-hover:bg-indigo-650 group-hover:text-white group-hover:border-indigo-600 dark:group-hover:bg-indigo-500 dark:group-hover:text-slate-950 transition-all duration-300 shadow-md">
+              <div className="absolute -left-[17px] top-1 h-8 w-8 rounded-full bg-white dark:bg-slate-900 border-2 border-indigo-500 flex items-center justify-center text-indigo-600 dark:text-indigo-400 group-hover:bg-indigo-600 group-hover:text-white group-hover:border-indigo-600 dark:group-hover:bg-indigo-500 dark:group-hover:text-slate-950 transition-all duration-300 shadow-md">
                 <Briefcase className="h-4 w-4" />
               </div>
 
@@ -75,20 +75,20 @@ export default function Experience() {
                   </div>
                   
                   {/* Period badge */}
-                  <div className="flex items-center space-x-2 text-sm text-slate-500 dark:text-slate-450">
+                  <div className="flex items-center space-x-2 text-sm text-slate-500 dark:text-slate-400">
                     <Calendar className="h-4 w-4 text-indigo-500" />
                     <span className="font-medium">{exp.period}</span>
                   </div>
                 </div>
 
                 {/* Location */}
-                <div className="flex items-center space-x-1.5 text-xs text-slate-450 dark:text-slate-500 mb-4">
+                <div className="flex items-center space-x-1.5 text-xs text-slate-500 dark:text-slate-400 mb-4">
                   <MapPin className="h-3.5 w-3.5" />
                   <span>{exp.location}</span>
                 </div>
 
                 {/* Description list */}
-                <ul className="list-disc list-outside ml-4 space-y-2 text-slate-650 dark:text-slate-400 text-sm md:text-base mb-6">
+                <ul className="list-disc list-outside ml-4 space-y-2 text-slate-600 dark:text-slate-300 text-sm md:text-base mb-6">
                   {exp.description.map((bullet, idx) => (
                     <li key={idx} className="leading-relaxed">
                       {bullet}
@@ -101,7 +101,7 @@ export default function Experience() {
                   {exp.technologies.map((tech) => (
                     <span
                       key={tech}
-                      className="px-2.5 py-1 rounded-lg bg-slate-100 dark:bg-slate-800/80 border border-slate-200/50 dark:border-slate-700/50 text-slate-700 dark:text-slate-350 text-xs font-semibold"
+                      className="px-2.5 py-1 rounded-lg bg-slate-100 dark:bg-slate-800/80 border border-slate-200/50 dark:border-slate-700/50 text-slate-700 dark:text-slate-200 text-xs font-semibold hover:border-indigo-400/40 dark:hover:border-indigo-500/40 transition-colors duration-200"
                     >
                       {tech}
                     </span>
