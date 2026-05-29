@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Mail, Send, CheckCircle, AlertCircle } from 'lucide-react';
 import { Github, Linkedin } from './Icons';
 import { portfolioData } from '../data/portfolioData';
+import emailjs from '@emailjs/browser';
 
 export default function Contact() {
   const { name } = portfolioData.personalInfo;
@@ -71,28 +72,34 @@ export default function Contact() {
     setSubmitError('');
 
     try {
-      const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:5000';
-      const response = await fetch(`${apiUrl}/api/contact`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(form),
-      });
+      const serviceId = import.meta.env.VITE_EMAILJS_SERVICE_ID;
+      const templateId = import.meta.env.VITE_EMAILJS_TEMPLATE_ID;
+      const publicKey = import.meta.env.VITE_EMAILJS_PUBLIC_KEY;
 
-      const data = await response.json();
+      if (!serviceId || !templateId || !publicKey) {
+        throw new Error('EmailJS credentials are not configured in environment variables.');
+      }
 
-      if (response.ok && data.success) {
+      const templateParams = {
+        from_name: form.name,
+        from_email: form.email,
+        subject: form.subject,
+        message: form.message,
+      };
+
+      const result = await emailjs.send(serviceId, templateId, templateParams, publicKey);
+
+      if (result.status === 200 || result.text === 'OK') {
         setSubmitSuccess(true);
         setForm({ name: '', email: '', subject: '', message: '' });
         // Reset success message after 5 seconds
         setTimeout(() => setSubmitSuccess(false), 5000);
       } else {
-        setSubmitError(data.error || 'Something went wrong. Please try again.');
+        setSubmitError('Something went wrong while sending the email. Please try again.');
       }
     } catch (error) {
       console.error('Contact submission error:', error);
-      setSubmitError('Failed to connect to the server. Please ensure the backend is running and try again.');
+      setSubmitError(error.text || error.message || 'Failed to send message. Please try again later.');
     } finally {
       setIsSubmitting(false);
     }

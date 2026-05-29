@@ -166,7 +166,8 @@ export const portfolioData = {
         "Express.js",
         "MongoDB",
         "Tailwind CSS",
-        "Nodemailer"
+        "Nodemailer",
+        "Stripe"
       ],
       github: import.meta.env.VITE_GREVION_GITHUB,
       demo: import.meta.env.VITE_GREVION_DEMO,
