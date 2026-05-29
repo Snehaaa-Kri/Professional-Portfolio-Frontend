@@ -8,7 +8,7 @@ export const portfolioData = {
       "Backend & API Developer",
       "DSA Enthusiast"
     ],
-    avatarPlaceholder: "/profile.jpg",
+    avatarPlaceholder: "/profile.jpeg",
 
     // Better to load from env
     resumeUrl: import.meta.env.VITE_RESUME_URL,
@@ -54,18 +54,18 @@ export const portfolioData = {
     {
       category: "Languages",
       items: [
-        { name: "JavaScript", level: 90 },
-        { name: "Python", level: 75 },
-        { name: "C++", level: 80 },
-        { name: "SQL", level: 80 }
+        { name: "JavaScript", level: 90},
+        { name: "Python", level: 85 },
+        { name: "C++", level: 95 },
+        { name: "SQL", level: 90 }
       ]
     },
     {
       category: "Frontend",
       items: [
-        { name: "React.js", level: 90 },
+        { name: "React.js", level: 95 },
         { name: "Tailwind CSS", level: 95 },
-        { name: "Redux", level: 80 },
+        { name: "Redux", level: 90 },
         { name: "HTML/CSS", level: 95 }
       ]
     },
@@ -83,10 +83,10 @@ export const portfolioData = {
       category: "Databases & Tools",
       items: [
         { name: "MongoDB", level: 85 },
-        { name: "MySQL", level: 75 },
-        { name: "Docker", level: 70 },
+        { name: "MySQL", level: 85 },
+        { name: "Docker", level: 75 },
         { name: "Git & GitHub", level: 90 },
-        { name: "Postman", level: 85 },
+        { name: "Postman", level: 95 },
         { name: "Linux", level: 75 }
       ]
     }
@@ -106,6 +106,9 @@ export const portfolioData = {
       technologies: [
         "JavaScript",
         "TypeScript",
+        "Tailwind CSS",
+        "React.js",
+        "Next.js",
         "Node.js",
         "Express.js",
         "MongoDB",
@@ -136,6 +139,7 @@ export const portfolioData = {
   ],
 
   projects: [
+    //done - CPMS
     {
       title: "CPMS – College Placement Management System",
       description: "A role-based full-stack placement platform supporting multiple user roles with AI chatbot integration, Cloudinary document management, and secure authentication.",
@@ -152,10 +156,11 @@ export const portfolioData = {
         "OpenAI API"
       ],
       github: import.meta.env.VITE_CPMS_GITHUB,
-      demo: import.meta.env.VITE_CPMS_DEMO,
+      demo: "https://cpms-college-placement-management-s.vercel.app/",
       category: "Full Stack",
       featured: true
     },
+    //done
     {
       title: "Grevion – Parali Management Platform",
       description: "Hackathon project featuring RBAC, OTP authentication, modular dashboards, REST APIs, and automated email notifications.",
@@ -187,10 +192,11 @@ export const portfolioData = {
         "REST API"
       ],
       github: "https://github.com/Snehaaa-Kri/MarkMyFile-Backend.git",
-      demo: "",
+      demo: "", 
       category: "Backend",
       featured: false
     },
+    //done - GTA webiste
     {
       title: "GTA-Themed Portfolio Website",
       description:
@@ -211,6 +217,7 @@ export const portfolioData = {
       category: "Frontend",
       featured: true
     },
+    //
     {
       title: "AirConnect – Airline Booking System",
       description:
