@@ -8,7 +8,7 @@ export const portfolioData = {
       "Backend & API Developer",
       "DSA Enthusiast"
     ],
-    avatarPlaceholder: "/profile.jpeg",
+    avatarPlaceholder: "src/data/profile.jpeg",
 
     // Better to load from env
     resumeUrl: import.meta.env.VITE_RESUME_URL,
